@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { 取, 递 } from "../api.js";
 
-const 夹具 = ["准时热度样例", "迟到修正样例", "超迟到旁路样例"];
+const 夹具 = ["准时热度样例", "迟到修正样例", "二次迟到修正样例", "超迟到旁路样例"];
 
 export default function 事件流() {
   const [事, 设事] = useState([]);
@@ -20,7 +20,7 @@ export default function 事件流() {
       <p className="述">
         推入带「事件时 / 处理时」的互动点。每次推送会抬水位、尝试关窗，并可能写出撤回或旁路——不是「入湖落三件套」。
       </p>
-      <div className="提示条">建议顺序：准时（关第一窗）→ 迟到修正（出撤回单）→ 超迟到（旁路匣）。</div>
+      <div className="提示条">建议顺序：准时（关第一窗）→ 迟到修正（出撤回单）→ 二次迟到（版本再升、撤回链两跳）→ 超迟到（旁路匣）。</div>
       <div className="行">
         {夹具.map((n) => (
           <button key={n} className={`次 ${选 === n ? "亮片" : ""}`} onClick={() => 设选(n)}>{n}</button>

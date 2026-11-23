@@ -3,7 +3,8 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 
 from app.db import 夹具目录, 连接
-from app.services import 装载, 贯验, 目录
+from app.services import 装载, 贯验, 目录, 演练
+from app.modules import 允许迟到策略
 
 路由 = APIRouter(prefix="/api")
 
@@ -155,3 +156,24 @@ def 空桩():
     from app import modules
 
     return modules.列表()
+
+
+@路由.get("/迟到修正")
+def 列迟到修正(房间键: str = "", 状态: str = "已关闭"):
+    """迟到修正只读接口：窗键 / 允许迟到界 / 撤回或版本证据 / valid 一览。"""
+    return [允许迟到策略.汇总(e) for e in 允许迟到策略.列窗口证据(房间键=房间键, 状态=状态)]
+
+
+@路由.get("/迟到修正/明细")
+def 取迟到修正(窗键: str):
+    """单窗迟到修正证据：撤回链（旧值→新值、版本跃迁）、历史合计与 valid。"""
+    证 = 允许迟到策略.窗口证据(窗键)
+    if 证 is None:
+        raise HTTPException(404, f"窗不存在:{窗键}")
+    return 证
+
+
+@路由.post("/演练/迟到修正")
+def 跑迟到修正演练():
+    """题目夹具三段演练：首修、二修（两跳链）、修正与抬水位并发。"""
+    return 演练.跑演练()
